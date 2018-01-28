@@ -22,6 +22,8 @@ module.exports = scrollTo;
 function scrollTo(x, y, options) {
   options = options || {};
 
+  const win = options.certainWindow || window;
+
   // start position
   var start = scroll();
 
@@ -33,7 +35,7 @@ function scrollTo(x, y, options) {
 
   // scroll
   tween.update(function(o){
-    window.scrollTo(o.left | 0, o.top | 0);
+    win.scrollTo(o.left | 0, o.top | 0);
   });
 
   // handle end
@@ -55,12 +57,14 @@ function scrollTo(x, y, options) {
 /**
  * Return scroll position.
  *
+ * @param {Window} [certainWindow=window] - The DOM window on which we should operate
  * @return {Object}
  * @api private
  */
 
-function scroll() {
-  var y = window.pageYOffset || document.documentElement.scrollTop;
-  var x = window.pageXOffset || document.documentElement.scrollLeft;
+function scroll(certainWindow) {
+  const win = certainWindow || window;
+  var y = win.pageYOffset || win.document.documentElement.scrollTop;
+  var x = win.pageXOffset || win.document.documentElement.scrollLeft;
   return { top: y, left: x };
 }
